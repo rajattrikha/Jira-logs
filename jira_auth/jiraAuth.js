@@ -1,11 +1,11 @@
 const JiraClient = require("jira-connector");
-
+const JiraCredentials = require("../jira-api.json");
 const authenticate = new JiraClient({
   host: "startcpw.atlassian.net",
   strictSSL: true, // One of optional parameters
   basic_auth: {
-    email: "rajat.sharma@quovantis.com",
-    api_token: "htCtyukJ3Cs5fZG8hQCwD817",
+    email: JiraCredentials.email,
+    api_token: JiraCredentials.api_token,
   },
 });
 
