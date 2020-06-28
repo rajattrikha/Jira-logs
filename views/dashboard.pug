@@ -1,19 +1,24 @@
 html
   head
-    title Om Ganeshay Namah!
+    title Jira Logs
     link(rel="stylesheet" href="bootstrap.css")
     script(src="scripts/dashboard.js" type="text/javascript")
   body
-    h1 Har Har Mahadev!
-    h2 Jira-Logs
-
-    table(class='table')
-      tr
-        th Issue Description
-        th Work Logged
-      each issue in issues
-        tr 
-          td 
-            span= issue.summary
-          td
-            span= issue.timeTracking
+    div(class='container')
+      h2(class='mb-3 text-center') Jira-Logs
+      table(class='table table-bordered table-striped table-condensed')
+        tr
+          th Issue Description
+          th Issue Type
+          th Log time
+        each issue in issues
+          tr(data-issuekey= issue.issueKey) 
+            td 
+              span= issue.summary
+            td 
+              span= issue.issueType
+            td
+              .input-group.mb-3
+                input.form-control(type='text' placeholder='Enter time spent')
+                .input-group-append
+                  button#button-addon2.btn.btn-outline-secondary(type='button' class='add-time') add
