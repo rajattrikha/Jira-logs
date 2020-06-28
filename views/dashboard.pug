@@ -1,0 +1,19 @@
+html
+  head
+    title Om Ganeshay Namah!
+    link(rel="stylesheet" href="bootstrap.css")
+    script(src="scripts/dashboard.js" type="text/javascript")
+  body
+    h1 Har Har Mahadev!
+    h2 Jira-Logs
+
+    table(class='table')
+      tr
+        th Issue Description
+        th Work Logged
+      each issue in issues
+        tr 
+          td 
+            span= issue.summary
+          td
+            span= issue.timeTracking

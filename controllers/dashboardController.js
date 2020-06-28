@@ -6,10 +6,12 @@ exports.getIssues = async (req, res) => {
   try {
     const issues = await getIssuesForSprint();
     const representableResult = getPresentableIssues(issues);
-    res.status(200).json({
-      status: "Success",
-      data: representableResult,
-    });
+
+    res.render("dashboard", { issues: representableResult });
+    // res.status(200).json({
+    //   status: "Success",
+    //   data: representableResult,
+    // });
   } catch (err) {
     res.status(500).json({
       status: "Internal Server Error",
@@ -62,7 +64,6 @@ const getIssuesForSprint = async (req, res) => {
 const getPresentableIssues = (apiResult) => {
   console.log("regenerating results");
   return apiResult.issues.map((i) => {
-    console.log(i.fields.parent);
     return {
       issueKey: i.key,
       issueId: i.id,
