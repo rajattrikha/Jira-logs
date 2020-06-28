@@ -1,5 +1,5 @@
 const JiraClient = require("jira-connector");
-const JiraCredentials = require("../jira-api.json");
+const JiraCredentials = require("../jiraCredentials.json");
 const authenticate = new JiraClient({
   host: "startcpw.atlassian.net",
   strictSSL: true, // One of optional parameters
