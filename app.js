@@ -5,8 +5,11 @@ const dashboardRouter = require("./routes/dashboardRoutes");
 
 var app = express();
 app.use(express.json());
+
 app.use(express.static("assets"));
 app.use(express.static(path.join("node_modules/bootstrap/dist/css")));
+app.use(express.static(path.join("node_modules/toastr/build")));
+
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
 
