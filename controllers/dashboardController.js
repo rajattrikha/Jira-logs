@@ -10,7 +10,7 @@ exports.getIssues = async (req, res) => {
     res.render("dashboard", { issues: representableResult });
     // res.status(200).json({
     //   status: "Success",
-    //   data: representableResult,
+    //   data: issues,
     // });
   } catch (err) {
     res.status(500).json({
@@ -21,8 +21,6 @@ exports.getIssues = async (req, res) => {
 };
 
 exports.addWorkLog = async (req, res) => {
-  console.log("add worklogs");
-  console.log(req.body);
   try {
     await jira.issue.addWorkLog({
       issueKey: req.body.issueKey,
@@ -34,8 +32,9 @@ exports.addWorkLog = async (req, res) => {
     });
   } catch (err) {
     res.status(500).json({
-      status: "Internal Server Error",
-      message: err,
+      status: "fail",
+      message:
+        "I am sure you still love me after knowing I have a problem to deal with ❤",
     });
   }
 };
@@ -68,13 +67,15 @@ const getPresentableIssues = (apiResult) => {
       issueKey: i.key,
       issueId: i.id,
       issueType: i.fields.issuetype.name,
+      issueTypeIconUrl: i.fields.issuetype.iconUrl,
       isSubTask: i.fields.issuetype.subtask,
       priority: i.fields.priority.name,
       // userPic: i.fields.assignee.avatarUrls.48x48
       status: i.fields.status.name,
       summary: i.fields.summary,
-      timeTracking: i.fields.timetracking.timeSpent,
-      parentKey: i.fields.parent ? i.fields.parent.key : null,
+      spentTime: i.fields.timetracking.timeSpent,
+      remainingTime: i.fields.timetracking.remainingEstimate,
+      parentKey: i.fields.parent ? i.fields.parent.key : null, //add due date as well
       parentId: i.fields.parent ? i.fields.parent.id : null,
       workLog: i.fields.worklog.worklogs.map((wlog) => {
         return {
