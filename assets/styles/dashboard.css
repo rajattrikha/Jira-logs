@@ -2,3 +2,8 @@
 .table td {
   vertical-align: middle;
 }
+
+.form-control.is-invalid{
+  padding-right: 0;
+  background-image: none;  
+}

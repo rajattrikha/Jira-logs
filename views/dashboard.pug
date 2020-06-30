@@ -6,42 +6,48 @@ html
     link(rel="stylesheet" href="styles/dashboard.css")
     
   body
+    nav.navbar.navbar-light.bg-light.mb-4.shadow-sm
+      a.navbar-brand(href='#')
+        img.d-inline-block.align-top.mr-2(src='images/daybook-logo.png' width='30' height='30' alt='logo')
+        |DayBook
+
     div(class='container')
-      h2(class='mb-3 text-center') Jira-Logs
       table(class='table table-bordered table-condensed')
-        tr
-          th 
-          th Issue Description
-          th Logged
-          th Remaining
-          th Log time
-        each issue in issues
+        thead(class="thead-light")
           tr
-            if issue.issueType === "Story"
-              td(class="bg-light py-4")
-                img(src= issue.issueTypeIconUrl)
-              td(colspan="4" class="bg-light py-4")
-                if !issue.isSubTask == true
-                  span(class="font-weight-bold")= `${issue.issueKey} - ${issue.summary}`
-                else
-                  span= `${issue.issueKey} - ${issue.summary}`
-            else
-              td 
-                img(src= issue.issueTypeIconUrl)
-              td
-                if !issue.isSubTask == true
-                  span(class="font-weight-bold")= `${issue.issueKey} - ${issue.summary}`
-                else
-                  span= `${issue.issueKey} - ${issue.summary}`
-              td  
-                span= issue.spentTime
-              td
-                span= issue.remainingTime     
-              td
-                .input-group
-                  input.form-control(type='text' placeholder='Enter time spent')
-                  .input-group-append
-                    button#button-addon2.btn.btn-outline-secondary(type='button' class='add-time' data-issuekey= issue.issueKey) add
+            th 
+            th Issue Description
+            th Logged
+            th Remaining
+            th Log time
+        tbody    
+        each issue in issues
+            tr
+              if issue.issueType === "Story"
+                td(class="bg-light py-4")
+                  img(src= issue.issueTypeIconUrl)
+                td(colspan="4" class="bg-light py-4")
+                  if !issue.isSubTask == true
+                    span(class="font-weight-bold")= `${issue.issueKey} - ${issue.summary}`
+                  else
+                    span= `${issue.issueKey} - ${issue.summary}`
+              else
+                td 
+                  img(src= issue.issueTypeIconUrl)
+                td
+                  if !issue.isSubTask == true
+                    span(class="font-weight-bold")= `${issue.issueKey} - ${issue.summary}`
+                  else
+                    span= `${issue.issueKey} - ${issue.summary}`
+                td  
+                  span= issue.spentTime
+                td
+                  span= issue.remainingTime     
+                td
+                  .input-group
+                    input.form-control(type='text' placeholder='Enter time spent')
+                    .input-group-append
+                      button#button-addon2.btn.btn-outline-secondary(type='button' class='add-time' data-issuekey= issue.issueKey) add
 
 
   script(src="scripts/jquery.js" type="text/javascript")

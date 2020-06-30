@@ -21,6 +21,7 @@ exports.getIssues = async (req, res) => {
 };
 
 exports.addWorkLog = async (req, res) => {
+  console.log(req.body);
   try {
     await jira.issue.addWorkLog({
       issueKey: req.body.issueKey,

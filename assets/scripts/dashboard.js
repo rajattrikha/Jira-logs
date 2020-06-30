@@ -11,16 +11,23 @@ function clearField($textField) {
 function logTime($button) {
   const $parentContainer = $button.parents(".input-group");
   const $textField = $parentContainer.find("input[type=text]");
-  const time = $textField.val();
+  const time = $textField.val().trim();
   const issueKey = $button.data("issuekey");
 
   if (time == "" || !isTimeValid(time)) {
     toastr.error("Please enter valid input");
-    clearField($textField);
+    $textField.addClass("is-invalid")
     return;
+  } else {
+    $textField.removeClass("is-invalid")
   }
 
-  $.post("/", { issueKey: issueKey, timeSpent: time })
+  $.ajax({
+    url: '/',
+    method: 'POST',
+    data: JSON.stringify({ issueKey: issueKey, timeSpent: time }),
+    contentType: 'application/json',
+  })
     .done((response) => {
       if (response.status == "success") {
         toastr.success(response.message);
@@ -41,10 +48,11 @@ function logTime($button) {
 }
 
 function isTimeValid(time) {
-  let isValid = false;
-  const unit = time[time.length - 1];
-  if (unit == "d" || unit == "h" || unit == "m") {
-    isValid = true;
+  const unit = time.slice(time.length - 1);
+  const value = time.slice(0, -1);
+
+  if ((unit == "d" || unit == "h" || unit == "m") && !isNaN(value)) {
+    return true;
   }
-  return isValid;
+  return false;
 }
