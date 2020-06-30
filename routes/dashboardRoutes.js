@@ -7,5 +7,4 @@ router
   .route("/")
   .get(dashboardController.getIssues)
   .post(dashboardController.addWorkLog);
-
 module.exports = router;
