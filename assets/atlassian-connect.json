@@ -2,7 +2,7 @@
   "name": "Jira Scribe",
   "description": "An app to log work hours at single place.",
   "key": "com.quovantis.jirascribe",
-  "baseUrl": "https://b7d4fececee8.ngrok.io",
+  "baseUrl": "https://jirascribe.herokuapp.com/",
   "vendor": {
     "name": "Quovantis Technologies",
     "url": "http://www.quovantis.com"
