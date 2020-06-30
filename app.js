@@ -3,6 +3,7 @@ const express = require("express");
 const path = require("path");
 const dashboardRouter = require("./routes/dashboardRoutes");
 const aboutRouter = require("./routes/aboutRoutes");
+const port = process.env.PORT || 3000;
 
 var app = express();
 app.use(express.json());
@@ -17,6 +18,6 @@ app.set("views", path.join(__dirname, "views"));
 app.use("/", dashboardRouter);
 app.use("/about", aboutRouter);
 
-app.listen(3000, () => {
-  console.log(`Server is running at localhost:3000/ `);
+app.listen(port, () => {
+  console.log(`Server is running at localhost:${port}/`);
 });
