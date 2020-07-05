@@ -16,7 +16,6 @@ exports.getIssues = async (req, res) => {
 };
 
 exports.addWorkLog = async (req, res) => {
-  console.log(req.body);
   try {
     await jira.issue.addWorkLog({
       issueKey: req.body.issueKey,
@@ -38,7 +37,6 @@ exports.addWorkLog = async (req, res) => {
 exports.getIssuesAPI = async (req, res) => {
   console.log('controller hit');
   var issues = await getSortedIssues();
-  console.log(issues);
   res.status(200).json({
     status: 'success',
     data: issues,
