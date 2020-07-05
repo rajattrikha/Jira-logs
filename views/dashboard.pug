@@ -32,12 +32,9 @@ html
               each subTask in issue.subTasks
                 tr 
                   td 
-                    img(src= subTask.issueTypeIconUrl)
                   td
-                    if !subTask.isSubTask == true
-                      span(class="font-weight-bold")= `${subTask.issueKey} - ${subTask.summary}`
-                    else
-                      span= `${subTask.issueKey} - ${subTask.summary}`
+                    img(class="pl-4" src= subTask.issueTypeIconUrl) 
+                    span(class="ml-2 align-middle")= `${subTask.issueKey} - ${subTask.summary}`
                   td  
                     span= subTask.spentTime
                   td
