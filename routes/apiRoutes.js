@@ -3,9 +3,6 @@ const dashboardController = require("./../controllers/dashboardController");
 
 const router = express.Router();
 
-router
-  .route("/")
-  .get(dashboardController.getIssues)
-  .post(dashboardController.addWorkLog);
+router.route("/").get(dashboardController.getIssuesAPI);
 
 module.exports = router;

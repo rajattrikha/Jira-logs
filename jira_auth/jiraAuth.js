@@ -1,11 +1,11 @@
 const JiraClient = require("jira-connector");
-// const JiraCredentials = require("../jiraCredentials.json");
+const JiraCredentials = require("../jiraCredentials.json");
 const authenticate = new JiraClient({
-  host: "startcpw.atlassian.net",
+  host: "box007.atlassian.net",
   strictSSL: true,
   basic_auth: {
-    email: process.env.EMAIL || ``, // JiraCredentials.email,
-    api_token: process.env.API_TOKEN || ``, // JiraCredentials.api_token,
+    email: JiraCredentials.email,
+    api_token: JiraCredentials.api_token,
   },
 });
 

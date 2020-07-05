@@ -1,20 +1,15 @@
-const jira = require("../jira_auth/jiraAuth");
-const boardId = 14;
+const jira = require('../jira_auth/jiraAuth');
+const { success } = require('toastr');
+const boardId = 1;
 
 exports.getIssues = async (req, res) => {
-  console.log("fetching board...");
+  console.log('fetching board...');
   try {
-    const issues = await getIssuesForSprint();
-    const representableResult = getPresentableIssues(issues);
-
-    res.render("dashboard", { issues: representableResult });
-    // res.status(200).json({
-    //   status: "Success",
-    //   data: issues,
-    // });
+    const issues = await getSortedIssues();
+    res.render('dashboard', { issues });
   } catch (err) {
     res.status(500).json({
-      status: "Internal Server Error",
+      status: 'Internal Server Error',
       message: err,
     });
   }
@@ -28,41 +23,52 @@ exports.addWorkLog = async (req, res) => {
       timeSpent: req.body.timeSpent,
     });
     res.status(200).json({
-      status: "success",
-      message: "Worklogs updated successfully",
+      status: 'success',
+      message: 'Worklogs updated successfully',
     });
   } catch (err) {
     res.status(500).json({
-      status: "fail",
+      status: 'fail',
       message:
-        "I am sure you still love me after knowing I have a problem to deal with ❤",
+        'I am sure you still love me after knowing I have a problem to deal with ❤',
     });
   }
 };
 
+exports.getIssuesAPI = async (req, res) => {
+  console.log('controller hit');
+  var issues = await getSortedIssues();
+  console.log(issues);
+  res.status(200).json({
+    status: 'success',
+    data: issues,
+  });
+};
+
 const getCurrentSprintId = async (req, res) => {
-  console.log("fetching sprints...");
+  console.log('fetching sprints...');
   const sprints = await jira.board.getAllSprints({
     boardId: boardId,
-    state: "active",
+    state: 'active',
     maxResults: 1,
   });
   return sprints.values[0].id;
 };
 
 const getIssuesForSprint = async (req, res) => {
-  console.log("fetching issues for current sprint...");
+  console.log('fetching issues for current sprint...');
   const currentSprintId = await getCurrentSprintId();
   const issues = await jira.board.getIssuesForSprint({
     boardId: boardId,
     sprintId: currentSprintId,
-    jql: "assignee in (currentUser())",
+    jql:
+      'status != "Done" AND (assignee in (currentUser()) OR Owner in (currentUser()))',
   });
   return issues;
 };
 
 const getPresentableIssues = (apiResult) => {
-  console.log("regenerating results");
+  console.log('regenerating results');
   return apiResult.issues.map((i) => {
     return {
       issueKey: i.key,
@@ -85,6 +91,30 @@ const getPresentableIssues = (apiResult) => {
           timeSpentSeconds: wlog.timeSpentSeconds,
         };
       }),
+      subTasks: null,
     };
   });
+};
+
+const getSortedIssues = async () => {
+  const issues = await getIssuesForSprint();
+  const representableResult = await getPresentableIssues(issues);
+  const stories = representableResult.filter(
+    (item) => item.issueType == 'Story'
+  );
+
+  stories.forEach((story) => {
+    var subTasks = representableResult.filter((subTask) => {
+      return subTask.isSubTask && subTask.parentId == story.issueId;
+    });
+    story.subTasks = subTasks;
+  });
+
+  representableResult.forEach((task) => {
+    if (!task.parentId && task.issueType != 'Story') {
+      stories.push(task);
+    }
+  });
+
+  return stories;
 };

@@ -3,6 +3,7 @@ const express = require("express");
 const path = require("path");
 const dashboardRouter = require("./routes/dashboardRoutes");
 const aboutRouter = require("./routes/aboutRoutes");
+const apiRouter = require("./routes/apiRoutes");
 const port = process.env.PORT || 3000;
 
 var app = express();
@@ -16,6 +17,7 @@ app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
 
 app.use("/", dashboardRouter);
+app.use("/api", apiRouter);
 app.use("/about", aboutRouter);
 
 app.listen(port, () => {

@@ -18,8 +18,8 @@ html
             th Log time
         tbody    
         each issue in issues
-            tr
-              if issue.issueType === "Story"
+            if issue.issueType === "Story"
+              tr  
                 td(class="bg-light py-4")
                   img(src= issue.issueTypeIconUrl)
                 td(colspan="4" class="bg-light py-4")
@@ -27,7 +27,28 @@ html
                     span(class="font-weight-bold")= `${issue.issueKey} - ${issue.summary}`
                   else
                     span= `${issue.issueKey} - ${issue.summary}`
-              else
+            else
+            if issue.subTasks
+              each subTask in issue.subTasks
+                tr 
+                  td 
+                    img(src= subTask.issueTypeIconUrl)
+                  td
+                    if !subTask.isSubTask == true
+                      span(class="font-weight-bold")= `${subTask.issueKey} - ${subTask.summary}`
+                    else
+                      span= `${subTask.issueKey} - ${subTask.summary}`
+                  td  
+                    span= subTask.spentTime
+                  td
+                    span= subTask.remainingTime     
+                  td
+                    .input-group
+                      input.form-control(type='text' placeholder='Enter time spent')
+                      .input-group-append
+                        button#button-addon2.btn.btn-outline-secondary(type='button' class='add-time' data-issuekey= subTask.issueKey) add
+            else
+              tr
                 td 
                   img(src= issue.issueTypeIconUrl)
                 td
