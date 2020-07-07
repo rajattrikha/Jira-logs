@@ -1,11 +1,10 @@
 const jira = require('../jira_auth/jiraAuth');
-const { success } = require('toastr');
 const boardId = 1;
 
 exports.getIssues = async (req, res) => {
   console.log('fetching board...');
   try {
-    const issues = await getSortedIssues();
+    const issues = await getSortedIssues(req);
     res.render('dashboard', { issues });
   } catch (err) {
     res.status(500).json({
@@ -17,7 +16,7 @@ exports.getIssues = async (req, res) => {
 
 exports.addWorkLog = async (req, res) => {
   try {
-    await jira.issue.addWorkLog({
+    await getJiraInstance(req).issue.addWorkLog({
       issueKey: req.body.issueKey,
       timeSpent: req.body.timeSpent,
     });
@@ -36,16 +35,16 @@ exports.addWorkLog = async (req, res) => {
 
 exports.getIssuesAPI = async (req, res) => {
   console.log('controller hit');
-  var issues = await getSortedIssues();
+  var issues = await getSortedIssues(req);
   res.status(200).json({
     status: 'success',
     data: issues,
   });
 };
 
-const getCurrentSprintId = async (req, res) => {
+const getCurrentSprintId = async (req) => {
   console.log('fetching sprints...');
-  const sprints = await jira.board.getAllSprints({
+  const sprints = await getJiraInstance(req).board.getAllSprints({
     boardId: boardId,
     state: 'active',
     maxResults: 1,
@@ -53,10 +52,10 @@ const getCurrentSprintId = async (req, res) => {
   return sprints.values[0].id;
 };
 
-const getIssuesForSprint = async (req, res) => {
+const getIssuesForSprint = async (req) => {
   console.log('fetching issues for current sprint...');
-  const currentSprintId = await getCurrentSprintId();
-  const issues = await jira.board.getIssuesForSprint({
+  const currentSprintId = await getCurrentSprintId(req);
+  const issues = await getJiraInstance(req).board.getIssuesForSprint({
     boardId: boardId,
     sprintId: currentSprintId,
     jql:
@@ -94,8 +93,8 @@ const getPresentableIssues = (apiResult) => {
   });
 };
 
-const getSortedIssues = async () => {
-  const issues = await getIssuesForSprint();
+const getSortedIssues = async (req) => {
+  const issues = await getIssuesForSprint(req);
   const representableResult = await getPresentableIssues(issues);
   const stories = representableResult.filter(
     (item) => item.issueType == 'Story'
@@ -115,4 +114,9 @@ const getSortedIssues = async () => {
   });
 
   return stories;
+};
+
+const getJiraInstance = (req) => {
+  console.log(req.session);
+  return jira(req.session.accessToken, req.session.oauthTokenSecret);
 };
