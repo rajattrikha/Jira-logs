@@ -36,23 +36,7 @@ html
                   each subTask in issue.subTasks
                     +tableRow(subTask)
                 else
-                  tr
-                    td 
-                      img(src= issue.issueTypeIconUrl)
-                    td
-                      if !issue.isSubTask == true
-                        span(class="font-weight-bold")= `${issue.issueKey} - ${issue.summary}`
-                      else
-                        span= `${issue.issueKey} - ${issue.summary}`
-                    td  
-                      span= issue.spentTime
-                    td
-                      span= issue.remainingTime     
-                    td
-                      .input-group
-                        input.form-control(type='text' placeholder='Enter time spent')
-                        .input-group-append
-                          button#button-addon2.btn.btn-outline-secondary(type='button' class='add-time' data-issuekey= issue.issueKey) add
+                  +tableRow(issue)
       else
         .no-data-container.text-center
           img(class='mb-2' src='images/beer.jpg' width="320")
