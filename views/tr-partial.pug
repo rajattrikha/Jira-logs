@@ -1,0 +1,15 @@
+mixin tableRow(subTask)
+    tr 
+        td 
+        td
+            img(class="pl-4" src= subTask.issueTypeIconUrl) 
+            span(class="ml-2 subtask-text")= `${subTask.issueKey} - ${subTask.summary}`
+        td  
+            span= subTask.spentTime
+        td
+            span= subTask.remainingTime     
+        td
+            .input-group
+                input.form-control(type='text' placeholder='Enter time spent')
+                .input-group-append
+                button#button-addon2.btn.btn-outline-secondary(type='button' class='add-time' data-issuekey= subTask.issueKey) add
