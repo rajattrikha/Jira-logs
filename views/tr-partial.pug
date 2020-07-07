@@ -1,6 +1,6 @@
 mixin tableRow(subTask)
     tr
-        if subTask.parentId === null // If normal task or bug
+        if subTask.parentId === null 
             td 
                 img(src= subTask.issueTypeIconUrl)
         else
