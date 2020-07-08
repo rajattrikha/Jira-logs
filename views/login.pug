@@ -1,4 +1,13 @@
 html
+    head
+        link(rel="stylesheet" href="styles/login.css")
     body
-        a(href="login/requesttoken", target="_blank") Click me to authorize Jira
+        .login-wrapper
+            h3.brand-title JiraScribe
+            p.brand-subtitle Welcome to heaven.
+            a(class='login-btn' href="login/requesttoken")
+                span(class='image')
+                    img(src='images/jira-logo.png')
+                span(class='text')
+                    |Login to Jira              
             
