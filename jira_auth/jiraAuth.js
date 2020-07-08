@@ -9,7 +9,7 @@ module.exports = (token, token_secret) => {
     host: jiraConfig.jiraHost,
     oauth: {
       consumer_key: jiraConfig.consumerKey,
-      private_key: privateKey,
+      private_key: JSON.parse(privateKey),
       token: token,
       token_secret: token_secret,
     },

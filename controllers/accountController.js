@@ -13,7 +13,7 @@ exports.requestToken = (req, res) => {
       host: jiraConfig.jiraHost,
       oauth: {
         consumer_key: jiraConfig.consumerKey,
-        private_key: privateKey,
+        private_key: JSON.parse(privateKey),
       },
     },
     function (error, oauth) {
@@ -38,7 +38,7 @@ exports.jiraCallback = (req, res) => {
         token_secret: req.session.oauthTokenSecret,
         oauth_verifier: req.query.oauth_verifier,
         consumer_key: jiraConfig.consumerKey,
-        private_key: privateKey,
+        private_key: JSON.parse(privateKey),
       },
     },
     function (error, accessToken) {
