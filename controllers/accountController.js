@@ -47,7 +47,7 @@ exports.jiraCallback = (req, res) => {
       }
       console.log(accessToken);
       req.session.accessToken = accessToken;
-      res.redirect(req.protocol + '://' + req.get('host'));
+      res.redirect('https://' + req.get('host'));
     }
   );
 };
