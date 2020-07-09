@@ -2,6 +2,8 @@ console.log('Om Ganeshay Namah!');
 const express = require('express');
 const path = require('path');
 const session = require('express-session');
+const dotenv = require('dotenv');
+dotenv.config({ path: './config.env' });
 
 const dashboardRouter = require('./routes/dashboardRoutes');
 const aboutRouter = require('./routes/aboutRoutes');
