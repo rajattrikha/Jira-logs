@@ -64,9 +64,9 @@ const getIssuesForSprint = async (req) => {
   return issues;
 };
 
-const getPresentableIssues = (apiResult) => {
+const getPresentableIssues = (issues) => {
   console.log('regenerating results');
-  return apiResult.issues.map((i) => {
+  return issues.map((i) => {
     return {
       issueKey: i.key,
       issueId: i.id,
@@ -94,12 +94,14 @@ const getPresentableIssues = (apiResult) => {
 };
 
 const getSortedIssues = async (req) => {
-  const issues = await getIssuesForSprint(req);
-  const representableResult = await getPresentableIssues(issues);
+  const jiraIssues = await getIssuesForSprint(req);
+  const representableResult = await getPresentableIssues(jiraIssues.issues);
+
   const stories = representableResult.filter(
     (item) => item.issueType == 'Story'
   );
 
+  //Add subtasks in stories
   stories.forEach((story) => {
     var subTasks = representableResult.filter((subTask) => {
       return subTask.isSubTask && subTask.parentId == story.issueId;
@@ -107,16 +109,43 @@ const getSortedIssues = async (req) => {
     story.subTasks = subTasks;
   });
 
-  representableResult.forEach((task) => {
+  const issuesToRender = stories;
+
+  representableResult.forEach(async (task) => {
     if (!task.parentId && task.issueType != 'Story') {
-      stories.push(task);
+      //add orphan tasks and bugs
+
+      issuesToRender.push(task);
+    } else if (task.parentId) {
+      // Adds task assigned where user is neither owner nor assignee of parent story
+
+      const taskWithParent = stories.find((story) => {
+        return story.issueId == task.parentId;
+      });
+
+      if (!taskWithParent) {
+        // const jiraIssue = await getJiraInstance(req).issue.getIssue({
+        //   issueKey: task.parentId,
+        // });
+        // const story = await getPresentableIssues([jiraIssue]);
+        // story[0].subTasks = [task];
+        // console.log(story);
+        task.summary = task.summary.concat(` | ${task.parentKey}`);
+        task.parentId = null;
+        issuesToRender.push(task);
+      }
     }
   });
-
-  return stories;
+  return issuesToRender;
 };
 
 const getJiraInstance = (req) => {
-  console.log(req.session);
-  return jira(req.session.oauthAccessToken, req.session.oauthAccessTokenSecret);
+  if (process.env.NODE_ENV === 'development') {
+    return jira();
+  } else {
+    return jira(
+      req.session.oauthAccessToken,
+      req.session.oauthAccessTokenSecret
+    );
+  }
 };
