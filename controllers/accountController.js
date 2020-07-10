@@ -14,7 +14,7 @@ var consumer = new OAuth(
   jiraConfig.consumerKey,
   privateKey.replace(/\\n/gm, '\n'),
   '1.0',
-  'https://jirascribe.herokuapp.com/callback',
+  'https://jirascribe.herokuapp.com/login/callback',
   'RSA-SHA1',
   null,
   null
