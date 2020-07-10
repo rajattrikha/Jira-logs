@@ -1,7 +1,7 @@
 const JiraClient = require('jira-connector');
 const jiraConfig = require('./../jiraConfig.json');
 const sslConfig = require('./../privateConfig.json');
-const privateKey = sslConfig.privateKey;
+const privateKey = process.env.PRIVATEKEY || sslConfig.privateKey;
 const OAuth = require('oauth').OAuth;
 console.log(privateKey);
 exports.getLoginPage = (req, res) => {
