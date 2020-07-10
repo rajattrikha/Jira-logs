@@ -55,7 +55,7 @@ exports.jiraCallback = (request, response) => {
       } else {
         request.session.oauthAccessToken = oauthAccessToken;
         request.session.oauthAccessTokenSecret = oauthAccessTokenSecret;
-        res.redirect('https://' + req.get('host'));
+        response.redirect('https://' + request.get('host'));
       }
     }
   );
