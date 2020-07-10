@@ -1,9 +1,9 @@
 const JiraClient = require('jira-connector');
 const jiraConfig = require('./../jiraConfig.json');
 const sslConfig = require('./../privateConfig.json');
-const privateKey = process.env.PRIVATEKEY || sslConfig.privateKey;
+const privateKey = sslConfig.privateKey;
 const OAuth = require('oauth').OAuth;
-
+console.log(privateKey);
 exports.getLoginPage = (req, res) => {
   res.status(200).render('login');
 };
@@ -12,12 +12,12 @@ var consumer = new OAuth(
   'https://' + jiraConfig.jiraHost + '/plugins/servlet/oauth/request-token',
   'https://' + jiraConfig.jiraHost + '/plugins/servlet/oauth/access-token',
   jiraConfig.consumerKey,
-  '',
+  privateKey.replace(/\\n/gm, '\n'),
   '1.0',
   'https://jirascribe.herokuapp.com/callback',
   'RSA-SHA1',
   null,
-  JSON.parse(privateKey)
+  null
 );
 
 exports.requestToken = (request, response) => {

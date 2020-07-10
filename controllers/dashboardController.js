@@ -118,5 +118,5 @@ const getSortedIssues = async (req) => {
 
 const getJiraInstance = (req) => {
   console.log(req.session);
-  return jira(req.session.accessToken, req.session.oauthTokenSecret);
+  return jira(req.session.oauthAccessToken, req.session.oauthAccessTokenSecret);
 };
