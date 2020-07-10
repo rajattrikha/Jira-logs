@@ -14,6 +14,7 @@ exports.requestToken = (req, res) => {
       oauth: {
         consumer_key: jiraConfig.consumerKey,
         private_key: JSON.parse(privateKey),
+        grant_type: 'refresh_token',
       },
     },
     function (error, oauth) {
