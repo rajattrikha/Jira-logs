@@ -10,19 +10,18 @@ if (process.env.NODE_ENV === 'development') {
       host: jiraConfig.jiraHost,
       basic_auth: {
         email: jiraCredentials.email,
-        api_token: jiraCredentials.api_token
-      }
+        api_token: jiraCredentials.api_token,
+      },
     });
-  }
-}
-else {
+  };
+} else {
   module.exports = (token, token_secret) => {
     console.log(token_secret, token);
     return new JiraClient({
       host: jiraConfig.jiraHost,
       oauth: {
         consumer_key: jiraConfig.consumerKey,
-        private_key: JSON.parse(privateKey),
+        private_key: privateKey,
         token: token,
         token_secret: token_secret,
       },
