@@ -2,6 +2,7 @@ const jira = require('../jira_auth/jiraAuth');
 const boardId = 1;
 
 const getJiraInstance = (req) => {
+  console.log(req.session);
   if (process.env.NODE_ENV === 'development') {
     return jira();
   } else {
@@ -11,7 +12,6 @@ const getJiraInstance = (req) => {
     );
   }
 };
-
 
 exports.getIssues = async (req, res) => {
   console.log('fetching board...');
@@ -30,16 +30,16 @@ exports.getIssues = async (req, res) => {
 
 const getCurrentUser = async (req) => {
   try {
-    console.log("fetching user...")
+    console.log('fetching user...');
     const user = await getJiraInstance(req).user.getUser({
-      accountId: '5f01900e9d9a120029ef2de0'
+      accountId: '5f01900e9d9a120029ef2de0',
     });
     console.log(user);
     return user;
   } catch (err) {
     console.log(err);
   }
-}
+};
 
 exports.addWorkLog = async (req, res) => {
   try {
