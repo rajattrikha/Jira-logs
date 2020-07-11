@@ -8,9 +8,11 @@ html
   body
     include header.pug
     include tr-partial.pug
+    
+    +header(data.user)
 
     div(class='container')
-      if issues.length > 0
+      if data.issues.length > 0
         .table-container
           table(class='table table-bordered table-condensed')
             thead(class="thead-light")
@@ -21,7 +23,7 @@ html
                 th Remaining
                 th Log time
             tbody    
-            each issue in issues
+            each issue in data.issues
                 if issue.issueType === "Story"
                   tr  
                     td(class="bg-light py-4")

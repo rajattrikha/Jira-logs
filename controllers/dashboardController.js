@@ -1,11 +1,25 @@
 const jira = require('../jira_auth/jiraAuth');
 const boardId = 1;
 
+const getJiraInstance = (req) => {
+  if (process.env.NODE_ENV === 'development') {
+    return jira();
+  } else {
+    return jira(
+      req.session.oauthAccessToken,
+      req.session.oauthAccessTokenSecret
+    );
+  }
+};
+
+
 exports.getIssues = async (req, res) => {
   console.log('fetching board...');
   try {
     const issues = await getSortedIssues(req);
-    res.render('dashboard', { issues });
+    const user = await getCurrentUser(req);
+    const data = { user, issues };
+    res.render('dashboard', { data });
   } catch (err) {
     res.status(500).json({
       status: 'Internal Server Error',
@@ -13,6 +27,19 @@ exports.getIssues = async (req, res) => {
     });
   }
 };
+
+const getCurrentUser = async (req) => {
+  try {
+    console.log("fetching user...")
+    const user = await getJiraInstance(req).user.getUser({
+      accountId: '5f01900e9d9a120029ef2de0'
+    });
+    console.log(user);
+    return user;
+  } catch (err) {
+    console.log(err);
+  }
+}
 
 exports.addWorkLog = async (req, res) => {
   try {
@@ -137,15 +164,4 @@ const getSortedIssues = async (req) => {
     }
   });
   return issuesToRender;
-};
-
-const getJiraInstance = (req) => {
-  if (process.env.NODE_ENV === 'development') {
-    return jira();
-  } else {
-    return jira(
-      req.session.oauthAccessToken,
-      req.session.oauthAccessTokenSecret
-    );
-  }
 };
