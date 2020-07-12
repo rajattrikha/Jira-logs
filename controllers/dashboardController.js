@@ -16,12 +16,15 @@ const getJiraInstance = (req) => {
 exports.getIssues = async (req, res) => {
   console.log('fetching board...');
   try {
-    const issuesTask = getSortedIssues(req);
-    const userTask = getCurrentUser(req);
-
-    const user = await userTask;
-    const issues = await issuesTask;
-
+    const issues = await getSortedIssues(req);
+    const issue = issues.find((issue) => {
+      return issue.assignee;
+    });
+    const user = {
+      displayName: issue.assignee.displayName,
+      userAvatar: issue.assignee.avatarUrls['48x48'],
+    };
+    console.log(user);
     const data = { user, issues };
     res.render('dashboard', { data });
   } catch (err) {
@@ -91,6 +94,7 @@ const getIssuesForSprint = async (req) => {
     sprintId: currentSprintId,
     jql:
       'status != "Done" AND (assignee in (currentUser()) OR Owner in (currentUser()))',
+    expand: 'widgets',
   });
   return issues;
 };
@@ -105,7 +109,7 @@ const getPresentableIssues = (issues) => {
       issueTypeIconUrl: i.fields.issuetype.iconUrl,
       isSubTask: i.fields.issuetype.subtask,
       priority: i.fields.priority.name,
-      // userPic: i.fields.assignee.avatarUrls.48x48
+      assignee: i.fields.assignee,
       status: i.fields.status.name,
       summary: i.fields.summary,
       spentTime: i.fields.timetracking.timeSpent,

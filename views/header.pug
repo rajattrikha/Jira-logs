@@ -4,6 +4,6 @@ mixin header(user)
             img.d-inline-block.align-top.mr-2(src='images/daybook-logo.png' width='30' height='30' alt='logo')
             |JiraScribe
         span.float-right
-            img(src=`${user.avatarUrls['48x48']}` class='mr-2' width='30' height='30' alt='user')
+            img(src=`${user.userAvatar}` class='mr-2' width='30' height='30' alt='user')
             span= user.displayName
 

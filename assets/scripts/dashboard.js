@@ -1,25 +1,25 @@
-console.log("Om Namah Shivay!");
+console.log('Om Namah Shivay!');
 
 $(document).ready(() => {
-  $(".add-time").on("click", (e) => logTime($(e.target)));
+  $('.add-time').on('click', (e) => logTime($(e.target)));
 });
 
 function clearField($textField) {
-  $textField.val("");
+  $textField.val('');
 }
 
 function logTime($button) {
-  const $parentContainer = $button.parents(".input-group");
-  const $textField = $parentContainer.find("input[type=text]");
+  const $parentContainer = $button.parents('.input-group');
+  const $textField = $parentContainer.find('input[type=text]');
   const time = $textField.val().trim();
-  const issueKey = $button.data("issuekey");
+  const issueKey = $button.data('issuekey');
 
-  if (time == "" || !isTimeValid(time)) {
-    toastr.error("Please enter valid input");
-    $textField.addClass("is-invalid")
+  if (time == '' || !isTimeValid(time)) {
+    toastr.error('Please enter valid input');
+    $textField.addClass('is-invalid');
     return;
   } else {
-    $textField.removeClass("is-invalid")
+    $textField.removeClass('is-invalid');
   }
 
   $.ajax({
@@ -29,7 +29,7 @@ function logTime($button) {
     contentType: 'application/json',
   })
     .done((response) => {
-      if (response.status == "success") {
+      if (response.status == 'success') {
         toastr.success(response.message);
         setTimeout(() => {
           window.location.reload();
@@ -51,7 +51,7 @@ function isTimeValid(time) {
   const unit = time.slice(time.length - 1);
   const value = time.slice(0, -1);
 
-  if ((unit == "d" || unit == "h" || unit == "m") && !isNaN(value)) {
+  if (unit == 'd' || unit == 'h' || unit == 'm') {
     return true;
   }
   return false;
