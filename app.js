@@ -3,6 +3,8 @@ const express = require('express');
 const path = require('path');
 const session = require('express-session');
 const dotenv = require('dotenv');
+const authenticate = require('./middlewares/authentication');
+
 dotenv.config({ path: './config.env' });
 
 const dashboardRouter = require('./routes/dashboardRoutes');
@@ -31,9 +33,9 @@ app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
 app.use('/login', loginRouter);
-app.use('/', dashboardRouter);
-app.use('/api', apiRouter);
 app.use('/about', aboutRouter);
+app.use('/', authenticate, dashboardRouter);
+app.use('/api', authenticate, apiRouter);
 
 app.listen(port, () => {
   console.log(`Server is running at localhost:${port}/`);
