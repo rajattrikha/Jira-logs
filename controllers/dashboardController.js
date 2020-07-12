@@ -16,8 +16,12 @@ const getJiraInstance = (req) => {
 exports.getIssues = async (req, res) => {
   console.log('fetching board...');
   try {
-    const issues = await getSortedIssues(req);
-    const user = await getCurrentUser(req);
+    const issuesTask = getSortedIssues(req);
+    const userTask = getCurrentUser(req);
+
+    const user = await userTask;
+    const issues = await issuesTask;
+
     const data = { user, issues };
     res.render('dashboard', { data });
   } catch (err) {
