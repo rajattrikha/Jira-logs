@@ -17,13 +17,7 @@ exports.getIssues = async (req, res) => {
   console.log('fetching board...');
   try {
     const issues = await getSortedIssues(req);
-    const issue = issues.find((issue) => {
-      return issue.assignee;
-    });
-    const user = {
-      displayName: issue.assignee.displayName,
-      userAvatar: issue.assignee.avatarUrls['48x48'],
-    };
+    const user = getUserDetails(issues);
     console.log(user);
     const data = { user, issues };
     res.render('dashboard', { data });
@@ -172,4 +166,20 @@ const getSortedIssues = async (req) => {
     }
   });
   return issuesToRender;
+};
+
+const getUserDetails = (issues) => {
+  const issue = issues.find((issue) => {
+    return issue.assignee && issue.issueType === 'Sub-task';
+  });
+
+  if (!issue) {
+    issue = issues.find((issue) => {
+      return issue.assignee;
+    });
+  }
+  return {
+    displayName: issue.assignee.displayName,
+    userAvatar: issue.assignee.avatarUrls['48x48'],
+  };
 };
