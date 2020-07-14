@@ -47,6 +47,7 @@ exports.jiraCallback = (request, response) => {
     request.session.oauthRequestTokenSecret,
     request.query.oauth_verifier,
     function (error, oauthAccessToken, oauthAccessTokenSecret, results) {
+      console.log(results);
       if (error) {
         console.log(error.data);
         response.send('error getting access token');
