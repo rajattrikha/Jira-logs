@@ -1,5 +1,5 @@
 const jira = require('../jira_auth/jiraAuth');
-const boardId = 1;
+const boardId = 14;
 
 const getJiraInstance = (req) => {
   console.log(req.session);
