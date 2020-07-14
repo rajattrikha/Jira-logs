@@ -31,9 +31,7 @@ function logTime($button) {
     .done((response) => {
       if (response.status == 'success') {
         toastr.success(response.message);
-        setTimeout(() => {
-          window.location.reload();
-        }, 3000);
+        window.location.reload();
       } else {
         toastr.error(response.message);
       }
