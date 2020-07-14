@@ -169,17 +169,28 @@ const getSortedIssues = async (req) => {
 };
 
 const getUserDetails = (issues) => {
-  const issue = issues.find((issue) => {
+  let issue = issues.find((issue) => {
     return issue.assignee && issue.issueType === 'Sub-task';
   });
 
   if (!issue) {
     issue = issues.find((issue) => {
-      return issue.assignee;
+      return issue.assignee && issue.subTasks.length > 0;
     });
+    if (issue) {
+      issue = issue.subTasks[0];
+    }
   }
-  return {
-    displayName: issue.assignee.displayName,
-    userAvatar: issue.assignee.avatarUrls['48x48'],
-  };
+  if (issue) {
+    return {
+      displayName: issue.assignee.displayName,
+      userAvatar: issue.assignee.avatarUrls['48x48'],
+    };
+  } else {
+    return {
+      displayName: 'Rock Star',
+      userAvatar:
+        'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/User_font_awesome.svg/1200px-User_font_awesome.svg.png',
+    };
+  }
 };
