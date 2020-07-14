@@ -1,7 +1,7 @@
 const JiraClient = require('jira-connector');
 const jiraConfig = require('./../jiraConfig.json');
 const sslConfig = require('./../privateConfig.json');
-const privateKey = process.env.PRIVATEKEY || sslConfig.privateKey;
+const privateKey = process.env.PRIVATEKEY;
 
 if (process.env.NODE_ENV === 'development') {
   const jiraCredentials = require('./../jiraCredentials.json');
@@ -21,7 +21,7 @@ if (process.env.NODE_ENV === 'development') {
       host: jiraConfig.jiraHost,
       oauth: {
         consumer_key: jiraConfig.consumerKey,
-        private_key: privateKey,
+        private_key: JSON.parse(privateKey),
         token: token,
         token_secret: token_secret,
       },
