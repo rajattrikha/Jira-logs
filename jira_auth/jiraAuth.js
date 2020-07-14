@@ -1,6 +1,5 @@
 const JiraClient = require('jira-connector');
 const jiraConfig = require('./../jiraConfig.json');
-const sslConfig = require('./../privateConfig.json');
 const privateKey = process.env.PRIVATEKEY;
 
 if (process.env.NODE_ENV === 'development') {
