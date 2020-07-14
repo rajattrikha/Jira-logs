@@ -1,4 +1,4 @@
 {
-  "jiraHost": "https://startcpw.atlassian.net",
+  "jiraHost": "startcpw.atlassian.net",
   "consumerKey": "jira-scribe-qvt"
 }
