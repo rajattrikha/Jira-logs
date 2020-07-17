@@ -1,5 +1,7 @@
+const fetch = require('node-fetch');
 const jira = require('../jira_auth/jiraAuth');
-const boardId = 14;
+const jiraCredentials = require('../jiraCredentials.json');
+const boardId = process.env.NODE_ENV === 'development' ? 1 : 14;
 
 const getJiraInstance = (req) => {
   console.log(req.session);
@@ -12,6 +14,34 @@ const getJiraInstance = (req) => {
     );
   }
 };
+
+exports.getAllProjects = async (req, res) => {
+  try {
+    console.log("fetching projects...");
+    const response = await fetch('https://box007.atlassian.net/rest/api/3/project/search', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Basic ${Buffer.from(
+          `${jiraCredentials.email}:${jiraCredentials.api_token}`
+        ).toString('base64')}`,
+        'Accept': 'application/json'
+      }
+    });
+
+    const projects = JSON.parse(await response.text());
+    res.json({
+      status: 'success',
+      data: projects
+    });
+  } catch (error) {
+    res.json({
+      status: 'fail',
+      message: error
+    });
+  }
+}
+
+
 
 exports.getIssues = async (req, res) => {
   console.log('fetching board...');

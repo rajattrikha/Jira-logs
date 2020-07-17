@@ -8,4 +8,9 @@ router
   .get(dashboardController.getIssues)
   .post(dashboardController.addWorkLog);
 
+router
+  .route("/projects")
+  .get(dashboardController.getAllProjects);
+
+
 module.exports = router;

@@ -1,6 +1,14 @@
 const jiraConfig = require('./../jiraConfig.json');
-const privateKey = process.env.PRIVATEKEY;
 const OAuth = require('oauth').OAuth;
+
+let privateKey;
+if (process.env.NODE_ENV === 'development') {
+  const privateConfig = require('./../privateConfig.json');
+  privateKey = privateConfig.privateKey;
+}
+else {
+  privateKey = JSON.parse(process.env.PRIVATEKEY);
+}
 
 exports.getLoginPage = (req, res) => {
   res.status(200).render('login');
@@ -10,7 +18,7 @@ var consumer = new OAuth(
   'https://' + jiraConfig.jiraHost + '/plugins/servlet/oauth/request-token',
   'https://' + jiraConfig.jiraHost + '/plugins/servlet/oauth/access-token',
   jiraConfig.consumerKey,
-  JSON.parse(privateKey),
+  privateKey,
   '1.0',
   'https://jirascribe.herokuapp.com/login/callback',
   'RSA-SHA1',
@@ -33,9 +41,9 @@ exports.requestToken = (request, response) => {
       request.session.oauthRequestTokenSecret = oauthTokenSecret;
       response.redirect(
         'https://' +
-          jiraConfig.jiraHost +
-          '/plugins/servlet/oauth/authorize?oauth_token=' +
-          oauthToken
+        jiraConfig.jiraHost +
+        '/plugins/servlet/oauth/authorize?oauth_token=' +
+        oauthToken
       );
     }
   });
