@@ -1,6 +1,6 @@
-mixin stateDropdown(transitions, currentStatus)
-    .dropdown
-    button#dropdownMenuButton.btn.btn-secondary.dropdown-toggle(type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')= currentStatus
-    .dropdown-menu(aria-labelledby='dropdownMenuButton')
-        each transition in transitions
-            a.dropdown-item(href='#')= transition.name        
+mixin stateDropdown(transitions, currentStatus, issueKey)
+    .dropdown.change-transition(data-key=`${issueKey}`)
+        button#dropdownMenuButton.btn.btn-secondary.dropdown-toggle(type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')= currentStatus
+        .dropdown-menu(aria-labelledby='dropdownMenuButton')
+            each transition in transitions
+                a.dropdown-item(href='javascript:void(0)' id=`${transition.id}`)= transition.name        

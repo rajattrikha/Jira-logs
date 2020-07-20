@@ -2,6 +2,7 @@ const jira = require('../jira_auth/jiraAuth');
 const asyncForEach = require('../utils/async-iterator');
 const boardId = 14;
 let request;
+
 const getJiraInstance = (req) => {
   console.log(req.session);
   if (process.env.NODE_ENV === 'development') {
@@ -60,6 +61,22 @@ exports.addWorkLog = async (req, res) => {
     res.status(200).json({
       status: 'success',
       message: 'Worklogs updated successfully',
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: 'fail',
+      message:
+        'I am sure you still love me after knowing I have a problem to deal with ❤',
+    });
+  }
+};
+
+exports.changeTransition = async (req, res) => {
+  try {
+    await getJiraInstance(req).issue.transitionIssue(req.body);
+    res.status(200).json({
+      status: 'success',
+      message: 'status changed successfully',
     });
   } catch (err) {
     res.status(500).json({

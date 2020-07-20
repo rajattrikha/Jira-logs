@@ -24,4 +24,4 @@ mixin tableRow(subTask)
                 .input-group-append
                 button#button-addon2.btn.btn-secondary(type='button' class='add-time' data-issuekey= subTask.issueKey) Log
         td
-            +stateDropdown(subTask.state.transitions,subTask.status)
+            +stateDropdown(subTask.state.transitions,subTask.status,subTask.issueKey)
