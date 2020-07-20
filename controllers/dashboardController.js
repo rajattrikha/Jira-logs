@@ -1,6 +1,7 @@
 const jira = require('../jira_auth/jiraAuth');
+const asyncForEach = require('../utils/async-iterator');
 const boardId = 14;
-
+let request;
 const getJiraInstance = (req) => {
   console.log(req.session);
   if (process.env.NODE_ENV === 'development') {
@@ -15,9 +16,11 @@ const getJiraInstance = (req) => {
 
 exports.getIssues = async (req, res) => {
   console.log('fetching board...');
+  request = req;
   try {
     const issues = await getSortedIssues(req);
     const user = getUserDetails(issues);
+
     console.log(user);
     const data = { user, issues };
     res.render('dashboard', { data });
@@ -27,6 +30,12 @@ exports.getIssues = async (req, res) => {
       message: err,
     });
   }
+};
+
+const getTransitions = async (issueKey) => {
+  return await getJiraInstance(request).issue.getTransitions({
+    issueKey: issueKey,
+  });
 };
 
 const getCurrentUser = async (req) => {
@@ -118,6 +127,7 @@ const getPresentableIssues = (issues) => {
         };
       }),
       subTasks: null,
+      state: null,
     };
   });
 };
@@ -125,6 +135,10 @@ const getPresentableIssues = (issues) => {
 const getSortedIssues = async (req) => {
   const jiraIssues = await getIssuesForSprint(req);
   const representableResult = await getPresentableIssues(jiraIssues.issues);
+
+  await asyncForEach(representableResult, async (issue) => {
+    issue.state = await getTransitions(issue.issueKey);
+  });
 
   const stories = representableResult.filter(
     (item) => item.issueType == 'Story'

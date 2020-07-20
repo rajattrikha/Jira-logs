@@ -1,0 +1,6 @@
+mixin stateDropdown(transitions)
+    .dropdown
+    button#dropdownMenuButton.btn.btn-secondary.dropdown-toggle(type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')| ...
+    .dropdown-menu(aria-labelledby='dropdownMenuButton')
+        each transition in transitions
+            a.dropdown-item(href='#')= transition.name        

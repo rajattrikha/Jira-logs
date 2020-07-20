@@ -1,4 +1,5 @@
 mixin tableRow(subTask)
+    include state-dropdown.pug
     tr
         if subTask.parentId === null 
             td 
@@ -22,3 +23,5 @@ mixin tableRow(subTask)
                 input.form-control(type='text' placeholder='Enter time spent')
                 .input-group-append
                 button#button-addon2.btn.btn-secondary(type='button' class='add-time' data-issuekey= subTask.issueKey) Log
+        td
+            +stateDropdown(subTask.state.transitions)

@@ -26,9 +26,9 @@ app.use(
 );
 
 app.use(express.static('assets'));
-app.use(express.static(path.join('node_modules/bootstrap/dist/css')));
+app.use(express.static(path.join('node_modules/bootstrap/dist')));
 app.use(express.static(path.join('node_modules/toastr/build')));
-
+app.use(express.static(path.join('node_modules/popper.js/dist/umd')));
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
