@@ -2,7 +2,8 @@ console.log('Om Namah Shivay!');
 
 $(document).ready(() => {
   $('.add-time').on('click', (e) => logTime($(e.target)));
-  $('a.dropdown-item').on('click', (e) => changeTransition($(e.target)));
+  $(".change-transition-button").on('click', (e) => changeTransitionButtonClick($(e.target)));
+  $('.change-transition').on('click', 'a.dropdown-item', (e) => changeTransition($(e.target)));
 });
 
 function clearField($textField) {
@@ -54,6 +55,43 @@ function isTimeValid(time) {
     return true;
   }
   return false;
+}
+
+function changeTransitionButtonClick($element) {
+  const issueKey = $element.parents(".change-transition").data("key");
+  $.ajax({
+    url: '/get-transitions',
+    method: 'POST',
+    data: JSON.stringify({
+      issueKey: issueKey
+    }),
+    contentType: 'application/json',
+  })
+    .done((response) => {
+      if (response.status == 'success') {
+        $(`#dropdownContainer${issueKey} .loader`).css("display", "none");
+        const options = generateOptions(response.data.transitions);
+        $(`#dropdownContainer${issueKey}`).html(options);
+      }
+      else {
+        toastr.error(response.message);
+      }
+    })
+    .fail((err) => {
+      toastr.error(err.responseJSON.message);
+    });
+}
+
+function generateOptions(transitions) {
+  const options = [];
+
+  transitions.forEach(t => {
+    options.push(
+      `<a class='dropdown-item' href='javascript:void(0)' id=${t.id}>${t.name}</a>`
+    );
+  });
+
+  return options.join("");
 }
 
 

@@ -33,11 +33,11 @@ exports.getIssues = async (req, res) => {
   }
 };
 
-const getTransitions = async (issueKey) => {
-  return await getJiraInstance(request).issue.getTransitions({
-    issueKey: issueKey,
-  });
-};
+// const getTransitions = async (issueKey) => {
+//   return await getJiraInstance(request).issue.getTransitions({
+//     issueKey: issueKey,
+//   });
+// };
 
 const getCurrentUser = async (req) => {
   try {
@@ -67,6 +67,24 @@ exports.addWorkLog = async (req, res) => {
       status: 'fail',
       message:
         'I am sure you still love me after knowing I have a problem to deal with ❤',
+    });
+  }
+};
+
+exports.getTransitions = async (req, res) => {
+  try {
+    console.log("getting transitions", req.body);
+    const transitions = await getJiraInstance(request).issue.getTransitions({
+      issueKey: req.body.issueKey,
+    });
+    res.status(200).json({
+      status: 'success',
+      data: transitions
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: 'fail',
+      message: 'failed in getting transitions',
     });
   }
 };
@@ -153,9 +171,9 @@ const getSortedIssues = async (req) => {
   const jiraIssues = await getIssuesForSprint(req);
   const representableResult = await getPresentableIssues(jiraIssues.issues);
 
-  await asyncForEach(representableResult, async (issue) => {
-    issue.state = await getTransitions(issue.issueKey);
-  });
+  // await asyncForEach(representableResult, async (issue) => {
+  //   issue.state = await getTransitions(issue.issueKey);
+  // });
 
   const stories = representableResult.filter(
     (item) => item.issueType == 'Story'
