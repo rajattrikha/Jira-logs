@@ -1,7 +1,6 @@
 const jira = require('../jira_auth/jiraAuth');
 const asyncForEach = require('../utils/async-iterator');
 const boardId = 14;
-let request;
 
 const getJiraInstance = (req) => {
   console.log(req.session);
@@ -17,7 +16,6 @@ const getJiraInstance = (req) => {
 
 exports.getIssues = async (req, res) => {
   console.log('fetching board...');
-  request = req;
   try {
     const issues = await getSortedIssues(req);
     const user = getUserDetails(issues);
@@ -73,13 +71,13 @@ exports.addWorkLog = async (req, res) => {
 
 exports.getTransitions = async (req, res) => {
   try {
-    console.log("getting transitions", req.body);
-    const transitions = await getJiraInstance(request).issue.getTransitions({
-      issueKey: req.body.issueKey,
+    console.log('getting transitions', req.query);
+    const transitions = await getJiraInstance(req).issue.getTransitions({
+      issueKey: req.query.issueKey,
     });
     res.status(200).json({
       status: 'success',
-      data: transitions
+      data: transitions,
     });
   } catch (err) {
     res.status(500).json({

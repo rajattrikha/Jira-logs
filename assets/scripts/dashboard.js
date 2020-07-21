@@ -2,8 +2,12 @@ console.log('Om Namah Shivay!');
 
 $(document).ready(() => {
   $('.add-time').on('click', (e) => logTime($(e.target)));
-  $(".change-transition-button").on('click', (e) => changeTransitionButtonClick($(e.target)));
-  $('.change-transition').on('click', 'a.dropdown-item', (e) => changeTransition($(e.target)));
+  $('.change-transition-button').on('click', (e) =>
+    changeTransitionButtonClick($(e.target))
+  );
+  $('.change-transition').on('click', 'a.dropdown-item', (e) =>
+    changeTransition($(e.target))
+  );
 });
 
 function clearField($textField) {
@@ -58,22 +62,14 @@ function isTimeValid(time) {
 }
 
 function changeTransitionButtonClick($element) {
-  const issueKey = $element.parents(".change-transition").data("key");
-  $.ajax({
-    url: '/get-transitions',
-    method: 'POST',
-    data: JSON.stringify({
-      issueKey: issueKey
-    }),
-    contentType: 'application/json',
-  })
+  const issueKey = $element.parents('.change-transition').data('key');
+  $.getJSON('/transitions', { issueKey: issueKey })
     .done((response) => {
       if (response.status == 'success') {
-        $(`#dropdownContainer${issueKey} .loader`).css("display", "none");
+        $(`#dropdownContainer${issueKey} .loader`).css('display', 'none');
         const options = generateOptions(response.data.transitions);
         $(`#dropdownContainer${issueKey}`).html(options);
-      }
-      else {
+      } else {
         toastr.error(response.message);
       }
     })
@@ -85,34 +81,33 @@ function changeTransitionButtonClick($element) {
 function generateOptions(transitions) {
   const options = [];
 
-  transitions.forEach(t => {
+  transitions.forEach((t) => {
     options.push(
       `<a class='dropdown-item' href='javascript:void(0)' id=${t.id}>${t.name}</a>`
     );
   });
 
-  return options.join("");
+  return options.join('');
 }
 
-
 function changeTransition($element) {
-  const id = $element.attr("id");
-  const issueKey = $element.parents(".change-transition").data("key");
+  const id = $element.attr('id');
+  const issueKey = $element.parents('.change-transition').data('key');
   $.ajax({
-    url: '/change-transition',
+    url: '/transitions',
     method: 'POST',
     data: JSON.stringify({
       issueKey: issueKey,
       transition: {
-        id: id
-      }
+        id: id,
+      },
     }),
     contentType: 'application/json',
   })
     .done((response) => {
       if (response.status == 'success') {
         toastr.success(response.message);
-        window.location.reload();
+        $element.parent().siblings('.btn').text($element.text());
       } else {
         toastr.error(response.message);
       }

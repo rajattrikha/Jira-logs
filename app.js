@@ -22,6 +22,8 @@ app.use(
     secret: 'hushh its our secret',
     resave: false,
     saveUninitialized: true,
+    expires: Date.now() + 30 * 86400 * 1000,
+    secure: true,
   })
 );
 

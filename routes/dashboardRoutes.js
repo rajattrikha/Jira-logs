@@ -1,14 +1,16 @@
-const express = require("express");
-const dashboardController = require("./../controllers/dashboardController");
+const express = require('express');
+const dashboardController = require('./../controllers/dashboardController');
 
 const router = express.Router();
 
 router
-  .route("/")
+  .route('/')
   .get(dashboardController.getIssues)
   .post(dashboardController.addWorkLog);
 
-router.route("/get-transitions").post(dashboardController.getTransitions);
-router.route("/change-transition").post(dashboardController.changeTransition);
+router
+  .route('/transitions')
+  .get(dashboardController.getTransitions)
+  .post(dashboardController.changeTransition);
 
 module.exports = router;
