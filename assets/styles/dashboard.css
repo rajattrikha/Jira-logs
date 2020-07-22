@@ -49,6 +49,9 @@
 .add-time {
   background: linear-gradient(325.63deg, #02b1d5 0, #0ae5e1 100%);
 }
+.add-time:hover{
+  background: linear-gradient(325.63deg,#0ae5e1 0,#02b1d5 100%);
+}
 
 .change-transition .dropdown-item{
   color: #6c757d;

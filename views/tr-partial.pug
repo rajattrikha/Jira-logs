@@ -20,7 +20,7 @@ mixin tableRow(subTask)
             span= subTask.remainingTime     
         td(class="wd-20")
             .input-group
-                input.form-control(type='text' placeholder='Enter time spent')
+                input.form-control(type='text' placeholder='Enter time')
                 .input-group-append
                 button#button-addon2.btn.btn-default.text-white(type='button' class='add-time' data-issuekey= subTask.issueKey) Log
         td
