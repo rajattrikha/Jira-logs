@@ -83,7 +83,7 @@ function generateOptions(transitions) {
 
   transitions.forEach((t) => {
     options.push(
-      `<a class='dropdown-item' href='javascript:void(0)' id=${t.id}>${t.name}</a>`
+      `<a class='dropdown-item' href='javascript:void(0)' id=${t.id}>${t.to.name}</a>`
     );
   });
 

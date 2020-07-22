@@ -1,8 +1,8 @@
 //- transitions, 
 mixin stateDropdown(currentStatus, issueKey)
     .dropdown.change-transition(data-key=`${issueKey}`)
-        button#dropdownMenuButton.btn.btn-secondary.dropdown-toggle.change-transition-button(type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')= currentStatus
-        .dropdown-menu(aria-labelledby='dropdownMenuButton' id=`dropdownContainer${issueKey}`)
+        button#dropdownMenuButton.btn.btn-link.text-muted.text-decoration-none.dropdown-toggle.change-transition-button(type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')= currentStatus
+        .dropdown-menu.shadow(aria-labelledby='dropdownMenuButton' id=`dropdownContainer${issueKey}`)
             img(class='loader' src='images/loader.gif')
             //- each transition in transitions
             //-     a.dropdown-item(href='javascript:void(0)' id=`${transition.id}`)= transition.name        

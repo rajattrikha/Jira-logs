@@ -17,11 +17,14 @@
 }
 .table th:nth-child(2),
 .table td:nth-child(2) {
-  width: 50%;
+  width: 45%;
 }
 .table th.wd-20,
 .table td.wd-20 {
   width: 16%;
+}
+.table th.wd-sm{
+  width: 110px;
 }
 
 .form-control.is-invalid {
@@ -42,7 +45,29 @@
   transform: translateX(-50%);
 }
 
-.change-transition-button,
+
 .add-time {
   background: linear-gradient(325.63deg, #02b1d5 0, #0ae5e1 100%);
+}
+
+.change-transition .dropdown-item{
+  color: #6c757d;
+}
+.change-transition .dropdown-item:hover{
+  color: #02b1d5;
+}
+
+/* Open */
+.blue-gray{
+
+}
+
+/* Resolved */
+.green{
+
+}
+
+/* In-progress */
+.yellow{
+
 }

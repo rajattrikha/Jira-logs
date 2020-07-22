@@ -12,7 +12,7 @@ mixin tableRow(subTask)
                 span(class="font-weight-bold")= `${subTask.issueKey} - ${subTask.summary}`
         else
             td
-                img(class="pl-4" src= subTask.issueTypeIconUrl) 
+                img(src= subTask.issueTypeIconUrl) 
                 span(class="ml-2 subtask-text")= `${subTask.issueKey} - ${subTask.summary}`
         td  
             span= subTask.spentTime
@@ -22,7 +22,7 @@ mixin tableRow(subTask)
             .input-group
                 input.form-control(type='text' placeholder='Enter time spent')
                 .input-group-append
-                button#button-addon2.btn.btn-secondary(type='button' class='add-time' data-issuekey= subTask.issueKey) Log
+                button#button-addon2.btn.btn-default.text-white(type='button' class='add-time' data-issuekey= subTask.issueKey) Log
         td
             //- subTask.state.transitions,
             +stateDropdown(subTask.status,subTask.issueKey)
