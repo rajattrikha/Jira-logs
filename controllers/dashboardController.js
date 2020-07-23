@@ -174,7 +174,7 @@ const getSortedIssues = async (req) => {
   // });
 
   const stories = representableResult.filter(
-    (item) => item.issueType == 'Story'
+    (item) => item.issueType == 'Story' || item.issueType == 'Task'
   );
 
   //Add subtasks in stories
@@ -188,7 +188,11 @@ const getSortedIssues = async (req) => {
   const issuesToRender = stories;
 
   representableResult.forEach(async (task) => {
-    if (!task.parentId && task.issueType != 'Story') {
+    if (
+      !task.parentId &&
+      task.issueType != 'Story' &&
+      task.issueType != 'Task'
+    ) {
       //add orphan tasks and bugs
 
       issuesToRender.push(task);

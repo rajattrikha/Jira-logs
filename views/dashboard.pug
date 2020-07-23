@@ -26,7 +26,7 @@ html
                 th Status
             tbody    
             each issue in data.issues
-                if issue.issueType === "Story"
+                if issue.issueType === "Story" || issue.issueType ==="Task"
                   tr  
                     td(class="bg-light py-4")
                       img(src= issue.issueTypeIconUrl)
