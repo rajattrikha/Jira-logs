@@ -10,7 +10,7 @@ var consumer = new OAuth(
   'https://' + jiraConfig.jiraHost + '/plugins/servlet/oauth/request-token',
   'https://' + jiraConfig.jiraHost + '/plugins/servlet/oauth/access-token',
   jiraConfig.consumerKey,
-  privateKey,
+  JSON.parse(privateKey),
   '1.0',
   'https://jirascribe.herokuapp.com/login/callback',
   'RSA-SHA1',
@@ -33,9 +33,9 @@ exports.requestToken = (request, response) => {
       request.session.oauthRequestTokenSecret = oauthTokenSecret;
       response.redirect(
         'https://' +
-        jiraConfig.jiraHost +
-        '/plugins/servlet/oauth/authorize?oauth_token=' +
-        oauthToken
+          jiraConfig.jiraHost +
+          '/plugins/servlet/oauth/authorize?oauth_token=' +
+          oauthToken
       );
     }
   });
