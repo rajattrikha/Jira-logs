@@ -104,12 +104,18 @@ exports.changeTransition = async (req, res) => {
 };
 
 exports.getIssuesAPI = async (req, res) => {
-  console.log('controller hit');
-  var issues = await getSortedIssues(req);
-  res.status(200).json({
-    status: 'success',
-    data: issues,
-  });
+  try {
+    console.log('controller hit');
+    const issues = await getSortedIssues(req);
+    const user = getUserDetails(issues);
+    res.status(200).json({
+      status: 'success',
+      data: issues,
+      user: user,
+    });
+  } catch (exception) {
+    console.log(exception);
+  }
 };
 
 const getCurrentSprintId = async (req) => {
@@ -223,13 +229,30 @@ const getUserDetails = (issues) => {
   let issue = issues.find((issue) => {
     return issue.assignee && issue.issueType === 'Sub-task';
   });
+  if (issue) {
+    issue = issue.subTasks[0];
+  }
 
   if (!issue) {
-    issue = issues.find((issue) => {
-      return issue.assignee && issue.subTasks.length > 0;
-    });
-    if (issue) {
-      issue = issue.subTasks[0];
+    if (!issue) {
+      issue = issues.find((issue) => {
+        return issue.assignee && issue.SubTasks && issue.subTasks.length > 0;
+      });
+      if (issue) {
+        issue = issue.subTasks[0];
+      }
+    }
+
+    if (!issue) {
+      issue = issues.find((issue) => {
+        return issue.assignee && issue.issueType === 'Task';
+      });
+    }
+
+    if (!issue) {
+      issue = issues.find((issue) => {
+        return issue.assignee && issue.issueType === 'Bug';
+      });
     }
   }
   if (issue) {
